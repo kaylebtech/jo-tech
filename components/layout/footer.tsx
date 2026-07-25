@@ -97,6 +97,12 @@ export function Footer({
           </p>
           <p>Genuine devices · Warranty backed · Lagos, Nigeria</p>
         </div>
+
+        <p className="mt-4 text-center text-xs text-muted-foreground/70">
+          Built by{" "}
+          <span className="font-medium text-muted-foreground">Brivent Global Innovations Ltd</span> — Brivent
+          Product Lab
+        </p>
       </div>
     </footer>
   );
