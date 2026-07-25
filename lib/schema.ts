@@ -1,4 +1,4 @@
-import { BUSINESS, SITE_NAME, SITE_URL } from "@/lib/constants";
+import { BUILDER, BUSINESS, SITE_NAME, SITE_URL } from "@/lib/constants";
 
 type BusinessHours = Record<string, string>;
 
@@ -41,6 +41,22 @@ export function organizationSchema() {
     url: SITE_URL,
     logo: `${SITE_URL}/logo.png`,
     sameAs: [] as string[],
+  };
+}
+
+/** Credits the agency that designed/built the site — standard schema.org way to associate a builder with a WebSite. */
+export function websiteSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_NAME,
+    url: SITE_URL,
+    creator: {
+      "@type": "Organization",
+      name: BUILDER.name,
+      alternateName: BUILDER.division,
+      url: BUILDER.url,
+    },
   };
 }
 

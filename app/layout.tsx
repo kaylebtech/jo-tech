@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
-import { SITE_NAME, SITE_URL } from "@/lib/constants";
+import { BUILDER, SITE_NAME, SITE_URL } from "@/lib/constants";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -22,6 +22,9 @@ export const metadata: Metadata = {
   },
   description:
     "Jo Tech Gadgets Hub (JoTech) is Lagos' trusted store for brand new & UK-used smartphones, laptops, smart watches, AirPods, speakers and accessories. Buy, sell, swap and repair — visit us in Mosafejo, Lagos or chat on WhatsApp.",
+  authors: [{ name: BUILDER.name, url: BUILDER.url }],
+  creator: `${BUILDER.name} (${BUILDER.division})`,
+  publisher: SITE_NAME,
   openGraph: {
     type: "website",
     siteName: SITE_NAME,

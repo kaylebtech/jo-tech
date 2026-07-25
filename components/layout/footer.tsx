@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Smartphone, MessageCircle, MapPin, Phone, Mail } from "lucide-react";
-import { BUSINESS, SITE_NAME, whatsappLink } from "@/lib/constants";
+import { BUILDER, BUSINESS, SITE_NAME, whatsappLink } from "@/lib/constants";
 import { NewsletterForm } from "@/components/home/newsletter-form";
 import { InstagramIcon, FacebookIcon } from "@/components/shared/social-icons";
 
@@ -100,8 +100,15 @@ export function Footer({
 
         <p className="mt-4 text-center text-xs text-muted-foreground/70">
           Built by{" "}
-          <span className="font-medium text-muted-foreground">Brivent Global Innovations Ltd</span> — Brivent
-          Product Lab
+          <a
+            href={BUILDER.url}
+            target="_blank"
+            rel="noopener"
+            className="font-medium text-muted-foreground hover:text-foreground hover:underline"
+          >
+            {BUILDER.name}
+          </a>{" "}
+          — {BUILDER.division}
         </p>
       </div>
     </footer>

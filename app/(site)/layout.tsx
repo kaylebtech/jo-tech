@@ -3,7 +3,7 @@ import { Footer } from "@/components/layout/footer";
 import { WhatsAppButton } from "@/components/shared/whatsapp-button";
 import { BackToTop } from "@/components/shared/back-to-top";
 import { getCategories, getSiteSettings } from "@/lib/queries";
-import { organizationSchema, localBusinessSchema, jsonLdScript } from "@/lib/schema";
+import { organizationSchema, localBusinessSchema, websiteSchema, jsonLdScript } from "@/lib/schema";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   const [categories, settings] = await Promise.all([getCategories(), getSiteSettings()]);
@@ -15,6 +15,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(organizationSchema())} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={jsonLdScript(websiteSchema())} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={jsonLdScript(

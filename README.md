@@ -4,7 +4,7 @@ A premium, production-ready storefront + CMS for **JO TECH GADGETS HUB** — Lag
 
 **Status: feature-complete.** Storefront, full SEO, and the entire admin CMS are built and verified end-to-end (see [Build status](#build-status)).
 
-Built by **Brivent Global Innovations Ltd** — Brivent Product Lab.
+Built by **[Brivent Global Innovations Ltd](https://www.brivent.co/)** — Brivent Product Lab.
 
 ## Tech stack
 

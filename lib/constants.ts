@@ -14,6 +14,12 @@ export const BUSINESS = {
   googleMapsUrl: "https://maps.google.com/?q=Jo+Tech+Gadgets+Hub+Mosafejo+Lagos",
 } as const;
 
+export const BUILDER = {
+  name: "Brivent Global Innovations Ltd",
+  division: "Brivent Product Lab",
+  url: "https://www.brivent.co/",
+} as const;
+
 export const KEYWORD_ALIASES = [
   "Jo Tech",
   "Jotech",
