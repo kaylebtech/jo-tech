@@ -10,7 +10,7 @@ import { ProductReviews } from "@/components/product/product-reviews";
 import { RecordView } from "@/components/product/record-view";
 import { ProductCard } from "@/components/product/product-card";
 import { Reveal, RevealGroup } from "@/components/shared/reveal";
-import { getProductBySlug, getRelatedProducts } from "@/lib/queries";
+import { getProductBySlug, getRelatedProducts, getWhatsAppNumber } from "@/lib/queries";
 import { serializeProduct } from "@/lib/serialize";
 import { whatsappLink, SITE_URL } from "@/lib/constants";
 import { productSchema, breadcrumbSchema, jsonLdScript } from "@/lib/schema";
@@ -51,7 +51,10 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const related = await getRelatedProducts(product.categoryId, product.id);
+  const [related, whatsappNumber] = await Promise.all([
+    getRelatedProducts(product.categoryId, product.id),
+    getWhatsAppNumber(),
+  ]);
   const serializedRelated = related.map(serializeProduct);
   const price = product.price ? Number(product.price) : null;
   const compareAtPrice = product.compareAtPrice ? Number(product.compareAtPrice) : null;
@@ -141,7 +144,7 @@ export default async function ProductDetailPage({ params }: { params: Promise<Pa
                 className="w-full rounded-full bg-success text-success-foreground hover:bg-success/90"
                 render={
                   <a
-                    href={whatsappLink(`Hi Jo Tech! I'm interested in the ${product.name}.`)}
+                    href={whatsappLink(`Hi Jo Tech! I'm interested in the ${product.name}.`, whatsappNumber)}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

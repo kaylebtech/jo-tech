@@ -22,6 +22,7 @@ import {
 } from "@/lib/queries";
 import { serializeProduct } from "@/lib/serialize";
 import { faqSchema, jsonLdScript } from "@/lib/schema";
+import { BUSINESS } from "@/lib/constants";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -42,6 +43,7 @@ export default async function Home() {
 
   const products = featuredProducts.map(serializeProduct);
   const businessHours = (settings?.businessHours as Record<string, string> | null) ?? null;
+  const whatsappNumber = settings?.whatsappNumber || BUSINESS.whatsappNumber;
 
   return (
     <>
@@ -55,10 +57,14 @@ export default async function Home() {
       <BuySellSwap />
       <Testimonials reviews={reviews} />
       <Gallery images={gallery} />
-      <VisitStore businessHours={businessHours} googleMapsUrl={settings?.googleMapsUrl} />
+      <VisitStore
+        businessHours={businessHours}
+        googleMapsUrl={settings?.googleMapsUrl}
+        whatsappNumber={whatsappNumber}
+      />
       <FAQSection faqs={faqs} />
       <BlogPreview posts={blogPosts} />
-      <CtaBand />
+      <CtaBand whatsappNumber={whatsappNumber} />
     </>
   );
 }

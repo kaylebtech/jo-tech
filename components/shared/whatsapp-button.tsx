@@ -3,6 +3,7 @@
 import { motion } from "motion/react";
 import { MessageCircle } from "lucide-react";
 import { whatsappLink } from "@/lib/constants";
+import { useWhatsappNumber } from "@/components/providers/whatsapp-provider";
 
 export function WhatsAppButton({
   message = "Hi Jo Tech! I'd like to ask about a product.",
@@ -11,9 +12,11 @@ export function WhatsAppButton({
   message?: string;
   className?: string;
 }) {
+  const whatsappNumber = useWhatsappNumber();
+
   return (
     <motion.a
-      href={whatsappLink(message)}
+      href={whatsappLink(message, whatsappNumber)}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with us on WhatsApp"

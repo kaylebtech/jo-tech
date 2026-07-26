@@ -6,6 +6,7 @@ import { ArrowRight, MessageCircle, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { HeroDevices } from "@/components/home/hero-devices";
 import { whatsappLink } from "@/lib/constants";
+import { useWhatsappNumber } from "@/components/providers/whatsapp-provider";
 
 // Animate transform only (never opacity) — this is above-the-fold hero content
 // and is consistently the page's LCP candidate. An opacity:0 initial state
@@ -21,6 +22,8 @@ const fadeUp: Variants = {
 };
 
 export function Hero({ googleRating }: { googleRating?: number | null }) {
+  const whatsappNumber = useWhatsappNumber();
+
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(60%_50%_at_50%_0%,oklch(0.718_0.11_239.8_/_12%),transparent)]" />
@@ -100,7 +103,7 @@ export function Hero({ googleRating }: { googleRating?: number | null }) {
               variant="outline"
               className="h-12 w-full rounded-full border-success/40 px-8 text-base text-success hover:bg-success/10 hover:text-success sm:w-auto"
               render={
-                <a href={whatsappLink("Hi Jo Tech! I'd like to shop for a gadget.")} target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink("Hi Jo Tech! I'd like to shop for a gadget.", whatsappNumber)} target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="mr-1 size-4" />
                   Chat on WhatsApp
                 </a>

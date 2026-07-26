@@ -1,5 +1,7 @@
+import { cache } from "react";
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@/lib/generated/prisma/client";
+import { BUSINESS } from "@/lib/constants";
 
 export type ProductFilters = {
   category?: string;
@@ -103,9 +105,15 @@ export async function getProductsByIds(ids: string[]) {
   return ids.map((id) => products.find((p) => p.id === id)).filter((p): p is (typeof products)[number] => !!p);
 }
 
-export async function getSiteSettings() {
+export const getSiteSettings = cache(async () => {
   const settings = await prisma.siteSettings.findUnique({ where: { id: "singleton" } });
   return settings;
+});
+
+/** Resolves the WhatsApp number every CTA site-wide should use — admin-editable, falls back to the constant only if the settings row is somehow missing. */
+export async function getWhatsAppNumber() {
+  const settings = await getSiteSettings();
+  return settings?.whatsappNumber || BUSINESS.whatsappNumber;
 }
 
 export async function getCategories() {

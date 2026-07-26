@@ -2,9 +2,9 @@ import Link from "next/link";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/shared/reveal";
-import { whatsappLink } from "@/lib/constants";
+import { BUSINESS, whatsappLink } from "@/lib/constants";
 
-export function CtaBand() {
+export function CtaBand({ whatsappNumber = BUSINESS.whatsappNumber }: { whatsappNumber?: string }) {
   return (
     <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 lg:px-8 lg:pb-24">
       <Reveal className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary to-primary/80 px-6 py-14 text-center sm:px-12 lg:py-20">
@@ -36,7 +36,7 @@ export function CtaBand() {
               size="lg"
               className="h-12 w-full rounded-full bg-success px-8 text-base text-success-foreground hover:bg-success/90 sm:w-auto"
               render={
-                <a href={whatsappLink("Hi Jo Tech! I'd like to upgrade my device.")} target="_blank" rel="noopener noreferrer">
+                <a href={whatsappLink("Hi Jo Tech! I'd like to upgrade my device.", whatsappNumber)} target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="size-4" />
                   Chat on WhatsApp
                 </a>

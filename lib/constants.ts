@@ -8,8 +8,8 @@ export const BUSINESS = {
   city: "Lagos",
   country: "Nigeria",
   countryCode: "NG",
-  whatsappNumber: "2348000000000",
-  phoneNumbers: ["+234 800 000 0000"],
+  whatsappNumber: "2347055498008",
+  phoneNumbers: ["+2347055498008"],
   email: "info@jotechgadgetshub.com",
   googleMapsUrl: "https://maps.google.com/?q=Jo+Tech+Gadgets+Hub+Mosafejo+Lagos",
 } as const;

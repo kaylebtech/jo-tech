@@ -8,6 +8,7 @@ import { useCompare } from "@/hooks/use-compare";
 import { useProductsByIds } from "@/hooks/use-products-by-ids";
 import { whatsappLink } from "@/lib/constants";
 import { EmptyState } from "@/components/shared/empty-state";
+import { useWhatsappNumber } from "@/components/providers/whatsapp-provider";
 
 const nairaFormatter = new Intl.NumberFormat("en-NG", {
   style: "currency",
@@ -19,6 +20,7 @@ export default function ComparePage() {
   const { compareIds, hydrated, removeFromCompare, clearCompare } = useCompare();
   const { data, isLoading } = useProductsByIds(compareIds);
   const products = data?.results ?? [];
+  const whatsappNumber = useWhatsappNumber();
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
@@ -74,7 +76,7 @@ export default function ComparePage() {
                   size="sm"
                   className="mt-3 w-full rounded-full bg-success text-success-foreground hover:bg-success/90"
                   render={
-                    <a href={whatsappLink(`Hi Jo Tech! I'm comparing and interested in the ${product.name}.`)} target="_blank" rel="noopener noreferrer">
+                    <a href={whatsappLink(`Hi Jo Tech! I'm comparing and interested in the ${product.name}.`, whatsappNumber)} target="_blank" rel="noopener noreferrer">
                       <MessageCircle className="size-3.5" />
                       Inquire
                     </a>

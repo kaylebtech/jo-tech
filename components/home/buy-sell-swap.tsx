@@ -6,6 +6,7 @@ import { ShoppingBag, HandCoins, Repeat, Wrench, MessageCircle, Check } from "lu
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/shared/reveal";
 import { whatsappLink } from "@/lib/constants";
+import { useWhatsappNumber } from "@/components/providers/whatsapp-provider";
 
 const TABS = [
   {
@@ -53,6 +54,7 @@ const TABS = [
 export function BuySellSwap() {
   const [active, setActive] = useState<(typeof TABS)[number]["key"]>("buy");
   const activeTab = TABS.find((t) => t.key === active)!;
+  const whatsappNumber = useWhatsappNumber();
 
   return (
     <section className="bg-card/40 py-16 lg:py-24">
@@ -116,7 +118,7 @@ export function BuySellSwap() {
                   className="mt-8 w-fit rounded-full"
                   render={
                     <a
-                      href={whatsappLink(`Hi Jo Tech! I'd like to ${activeTab.label.toLowerCase()} a device.`)}
+                      href={whatsappLink(`Hi Jo Tech! I'd like to ${activeTab.label.toLowerCase()} a device.`, whatsappNumber)}
                       target="_blank"
                       rel="noopener noreferrer"
                     >

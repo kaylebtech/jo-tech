@@ -23,8 +23,10 @@ const COMPANY_LINKS = [
 
 export function Footer({
   socialLinks,
+  whatsappNumber,
 }: {
   socialLinks?: { instagram?: string; facebook?: string; tiktok?: string; x?: string } | null;
+  whatsappNumber: string;
 }) {
   return (
     <footer className="border-t border-border bg-card">
@@ -53,7 +55,7 @@ export function Footer({
                   <FacebookIcon className="size-4" />
                 </SocialIcon>
               )}
-              <SocialIcon href={whatsappLink("Hi Jo Tech! I have a question.")} label="WhatsApp">
+              <SocialIcon href={whatsappLink("Hi Jo Tech! I have a question.", whatsappNumber)} label="WhatsApp">
                 <MessageCircle className="size-4" />
               </SocialIcon>
             </div>

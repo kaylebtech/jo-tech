@@ -10,6 +10,7 @@ import { whatsappLink } from "@/lib/constants";
 import { revealItemVariants } from "@/components/shared/reveal";
 import { useWishlist } from "@/hooks/use-wishlist";
 import { useCompare } from "@/hooks/use-compare";
+import { useWhatsappNumber } from "@/components/providers/whatsapp-provider";
 import { toast } from "sonner";
 
 export type ProductCardData = {
@@ -43,6 +44,7 @@ export function ProductCard({ product, onQuickView }: { product: ProductCardData
   const outOfStock = product.stockStatus === "OUT_OF_STOCK";
   const { isWishlisted, toggleWishlist } = useWishlist();
   const { isComparing, toggleCompare, isFull, maxCompare } = useCompare();
+  const whatsappNumber = useWhatsappNumber();
   const wishlisted = isWishlisted(product.id);
   const comparing = isComparing(product.id);
 
@@ -146,7 +148,7 @@ export function ProductCard({ product, onQuickView }: { product: ProductCardData
             className="mt-3 w-full rounded-full border-success/30 text-success hover:bg-success/10 hover:text-success"
             render={
               <a
-                href={whatsappLink(`Hi Jo Tech! I'm interested in the ${product.name}.`)}
+                href={whatsappLink(`Hi Jo Tech! I'm interested in the ${product.name}.`, whatsappNumber)}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}

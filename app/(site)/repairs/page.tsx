@@ -6,6 +6,7 @@ import { IconFeatureGrid } from "@/components/shared/icon-feature-grid";
 import { CtaBand } from "@/components/home/cta-band";
 import { breadcrumbSchema, jsonLdScript } from "@/lib/schema";
 import { SITE_URL, whatsappLink } from "@/lib/constants";
+import { getWhatsAppNumber } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Phone & Laptop Repair Services in Lagos",
@@ -24,7 +25,9 @@ const SERVICES = [
   { icon: <Wrench className={ICON_CLASS} />, title: "Software & Diagnostics", description: "Freezing, boot loops, and performance issues diagnosed and resolved." },
 ];
 
-export default function RepairsPage() {
+export default async function RepairsPage() {
+  const whatsappNumber = await getWhatsAppNumber();
+
   return (
     <>
       <script
@@ -51,7 +54,7 @@ export default function RepairsPage() {
             size="lg"
             className="mt-6 rounded-full bg-success text-success-foreground hover:bg-success/90"
             render={
-              <a href={whatsappLink("Hi Jo Tech! I need a repair for my device.")} target="_blank" rel="noopener noreferrer">
+              <a href={whatsappLink("Hi Jo Tech! I need a repair for my device.", whatsappNumber)} target="_blank" rel="noopener noreferrer">
                 <MessageCircle className="size-4" />
                 Book a Repair on WhatsApp
               </a>
@@ -62,7 +65,7 @@ export default function RepairsPage() {
         <IconFeatureGrid items={SERVICES} className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" />
       </div>
 
-      <CtaBand />
+      <CtaBand whatsappNumber={whatsappNumber} />
     </>
   );
 }

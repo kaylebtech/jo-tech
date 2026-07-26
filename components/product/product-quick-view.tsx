@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { whatsappLink } from "@/lib/constants";
 import type { ProductCardData } from "@/components/product/product-card";
+import { useWhatsappNumber } from "@/components/providers/whatsapp-provider";
 
 const nairaFormatter = new Intl.NumberFormat("en-NG", {
   style: "currency",
@@ -24,6 +25,7 @@ export function ProductQuickView({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  const whatsappNumber = useWhatsappNumber();
   if (!product) return null;
   const image = product.images[0];
 
@@ -60,7 +62,7 @@ export function ProductQuickView({
                 className="w-full rounded-full border-success/30 bg-success text-success-foreground hover:bg-success/90"
                 render={
                   <a
-                    href={whatsappLink(`Hi Jo Tech! I'm interested in the ${product.name}.`)}
+                    href={whatsappLink(`Hi Jo Tech! I'm interested in the ${product.name}.`, whatsappNumber)}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

@@ -5,6 +5,7 @@ import { WhyChooseUs } from "@/components/home/why-choose-us";
 import { CtaBand } from "@/components/home/cta-band";
 import { breadcrumbSchema, jsonLdScript } from "@/lib/schema";
 import { SITE_URL, SITE_NAME, BUSINESS } from "@/lib/constants";
+import { getWhatsAppNumber } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "About Us",
@@ -12,7 +13,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/about" },
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const whatsappNumber = await getWhatsAppNumber();
+
   return (
     <>
       <script
@@ -52,7 +55,7 @@ export default function AboutPage() {
 
       <TrustBar />
       <WhyChooseUs />
-      <CtaBand />
+      <CtaBand whatsappNumber={whatsappNumber} />
     </>
   );
 }

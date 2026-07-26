@@ -4,6 +4,7 @@ import { CtaBand } from "@/components/home/cta-band";
 import { Reveal } from "@/components/shared/reveal";
 import { breadcrumbSchema, jsonLdScript } from "@/lib/schema";
 import { SITE_URL } from "@/lib/constants";
+import { getWhatsAppNumber } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "Buy, Sell & Swap Phones and Laptops in Lagos",
@@ -12,7 +13,9 @@ export const metadata: Metadata = {
   alternates: { canonical: "/buy-sell-swap" },
 };
 
-export default function BuySellSwapPage() {
+export default async function BuySellSwapPage() {
+  const whatsappNumber = await getWhatsAppNumber();
+
   return (
     <>
       <script
@@ -36,7 +39,7 @@ export default function BuySellSwapPage() {
         </Reveal>
       </div>
       <BuySellSwap />
-      <CtaBand />
+      <CtaBand whatsappNumber={whatsappNumber} />
     </>
   );
 }

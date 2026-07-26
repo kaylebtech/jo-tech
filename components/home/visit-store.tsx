@@ -18,9 +18,11 @@ const DAY_LABELS: Record<string, string> = {
 export function VisitStore({
   businessHours,
   googleMapsUrl,
+  whatsappNumber = BUSINESS.whatsappNumber,
 }: {
   businessHours?: Record<string, string> | null;
   googleMapsUrl?: string | null;
+  whatsappNumber?: string;
 }) {
   const mapsUrl = googleMapsUrl ?? BUSINESS.googleMapsUrl;
   const mapEmbedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(
@@ -96,7 +98,7 @@ export function VisitStore({
               <Button
                 className="w-full rounded-full bg-success text-success-foreground hover:bg-success/90"
                 render={
-                  <a href={whatsappLink("Hi Jo Tech! I'd like to visit the store.")} target="_blank" rel="noopener noreferrer">
+                  <a href={whatsappLink("Hi Jo Tech! I'd like to visit the store.", whatsappNumber)} target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="size-4" />
                     Chat on WhatsApp
                   </a>

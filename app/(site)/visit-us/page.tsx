@@ -25,7 +25,11 @@ export default async function VisitUsPage() {
           ])
         )}
       />
-      <VisitStore businessHours={businessHours} googleMapsUrl={settings?.googleMapsUrl} />
+      <VisitStore
+        businessHours={businessHours}
+        googleMapsUrl={settings?.googleMapsUrl}
+        whatsappNumber={settings?.whatsappNumber || BUSINESS.whatsappNumber}
+      />
     </>
   );
 }
