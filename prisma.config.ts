@@ -10,6 +10,10 @@ export default defineConfig({
     seed: "tsx prisma/seed.ts",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    // The CLI (migrate/studio/etc.) needs a direct, non-pooled connection —
+    // pooled connections (e.g. Supabase's Supavisor transaction pooler) don't
+    // support the session-level operations migrations need. Falls back to
+    // DATABASE_URL so local dev (no pooler, nothing to split) needs only one var.
+    url: process.env["DIRECT_URL"] ?? process.env["DATABASE_URL"],
   },
 });
