@@ -1,14 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { categorySchema, type CategoryInput } from "@/lib/validations/category";
-
-async function requireAdmin() {
-  const session = await auth();
-  if (!session?.user) throw new Error("Unauthorized");
-}
+import { requireSuperAdmin } from "@/lib/auth-guards";
 
 function revalidatePublicPaths() {
   revalidatePath("/");
@@ -17,7 +12,7 @@ function revalidatePublicPaths() {
 }
 
 export async function createCategory(input: CategoryInput) {
-  await requireAdmin();
+  await requireSuperAdmin();
   const data = categorySchema.parse(input);
 
   const maxPosition = await prisma.category.aggregate({ _max: { position: true } });
@@ -29,7 +24,7 @@ export async function createCategory(input: CategoryInput) {
 }
 
 export async function updateCategory(id: string, input: CategoryInput) {
-  await requireAdmin();
+  await requireSuperAdmin();
   const data = categorySchema.parse(input);
 
   const category = await prisma.category.update({ where: { id }, data });
@@ -39,7 +34,7 @@ export async function updateCategory(id: string, input: CategoryInput) {
 }
 
 export async function deleteCategory(id: string) {
-  await requireAdmin();
+  await requireSuperAdmin();
 
   const productCount = await prisma.product.count({ where: { categoryId: id } });
   if (productCount > 0) {

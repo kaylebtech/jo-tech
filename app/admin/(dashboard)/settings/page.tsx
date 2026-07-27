@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { SettingsForm } from "@/components/admin/settings-form";
 import type { SettingsInput } from "@/lib/validations/settings";
@@ -6,6 +8,9 @@ import type { SettingsInput } from "@/lib/validations/settings";
 export const metadata: Metadata = { title: "Site Settings" };
 
 export default async function AdminSettingsPage() {
+  const session = await auth();
+  if (session?.user.role !== "SUPER_ADMIN") redirect("/admin");
+
   const settings = await prisma.siteSettings.findUnique({ where: { id: "singleton" } });
   const hours = (settings?.businessHours as Record<string, string> | null) ?? {};
   const social = (settings?.socialLinks as Record<string, string> | null) ?? {};

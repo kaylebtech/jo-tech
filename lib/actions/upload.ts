@@ -1,11 +1,10 @@
 "use server";
 
-import { auth } from "@/auth";
 import { uploadImage, deleteImage, type CloudinaryUploadResult } from "@/lib/cloudinary";
+import { requireAdmin } from "@/lib/auth-guards";
 
 export async function uploadImageAction(formData: FormData, folder: string): Promise<CloudinaryUploadResult> {
-  const session = await auth();
-  if (!session?.user) throw new Error("Unauthorized");
+  await requireAdmin();
 
   const file = formData.get("file");
   if (!(file instanceof File)) throw new Error("No file provided");
@@ -14,9 +13,8 @@ export async function uploadImageAction(formData: FormData, folder: string): Pro
 }
 
 export async function deleteImageAction(publicId: string): Promise<void> {
-  const session = await auth();
-  if (!session?.user) throw new Error("Unauthorized");
-  if (publicId.startsWith("seed/")) return; // placeholder images have no real Cloudinary asset
+  await requireAdmin();
+  if (publicId.startsWith("seed/") || publicId.startsWith("unsplash/")) return; // no real Cloudinary asset to delete
 
   await deleteImage(publicId);
 }

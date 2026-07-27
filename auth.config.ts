@@ -12,5 +12,23 @@ export default {
       if (!isAdminRoute || isLoginRoute) return true;
       return !!auth?.user;
     },
+    // Runs in both the Edge proxy and the full Node auth instance — must stay
+    // free of Prisma/Node-only code. On sign-in `user` carries the fields
+    // returned by authorize() in auth.ts; on every later request it's
+    // undefined and this just passes the existing token through.
+    jwt: ({ token, user }) => {
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
+      }
+      return token;
+    },
+    session: ({ session, token }) => {
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.role = token.role!;
+      }
+      return session;
+    },
   },
 } satisfies NextAuthConfig;

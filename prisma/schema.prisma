@@ -146,11 +146,17 @@ model SiteSettings {
 }
 
 model AdminUser {
-  id           String   @id @default(cuid())
-  email        String   @unique
+  id           String    @id @default(cuid())
+  email        String    @unique
   passwordHash String
   name         String?
-  createdAt    DateTime @default(now())
+  role         AdminRole @default(STAFF)
+  createdAt    DateTime  @default(now())
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  STAFF
 }
 
 enum ProductCondition {

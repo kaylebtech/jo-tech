@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { CategoriesTable } from "@/components/admin/categories-table";
 
 export const metadata: Metadata = { title: "Categories" };
 
 export default async function AdminCategoriesPage() {
+  const session = await auth();
+  if (session?.user.role !== "SUPER_ADMIN") redirect("/admin");
+
   const categories = await prisma.category.findMany({
     orderBy: { position: "asc" },
     include: { _count: { select: { products: true } } },

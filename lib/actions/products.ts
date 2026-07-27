@@ -1,15 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { productSchema, type ProductInput } from "@/lib/validations/product";
 import { deleteImage } from "@/lib/cloudinary";
-
-async function requireAdmin() {
-  const session = await auth();
-  if (!session?.user) throw new Error("Unauthorized");
-}
+import { requireAdmin } from "@/lib/auth-guards";
 
 function revalidateProductPaths(slug?: string, categorySlug?: string) {
   revalidatePath("/");

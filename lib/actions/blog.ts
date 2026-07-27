@@ -1,15 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { blogPostSchema, type BlogPostInput } from "@/lib/validations/blog";
 import { deleteImage } from "@/lib/cloudinary";
-
-async function requireAdmin() {
-  const session = await auth();
-  if (!session?.user) throw new Error("Unauthorized");
-}
+import { requireAdmin } from "@/lib/auth-guards";
 
 function revalidateBlogPaths(slug?: string) {
   revalidatePath("/");

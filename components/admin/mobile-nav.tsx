@@ -9,10 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { ADMIN_NAV } from "@/components/admin/sidebar";
 import { SITE_NAME } from "@/lib/constants";
+import type { AdminRole } from "@/lib/generated/prisma/client";
 
-export function AdminMobileNav({ adminName }: { adminName?: string | null }) {
+export function AdminMobileNav({ adminName, role }: { adminName?: string | null; role: AdminRole }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const navItems = ADMIN_NAV.filter((item) => !item.superAdminOnly || role === "SUPER_ADMIN");
 
   return (
     <header className="flex items-center justify-between border-b border-border bg-card px-4 py-3 lg:hidden">
@@ -35,7 +37,7 @@ export function AdminMobileNav({ adminName }: { adminName?: string | null }) {
           <SheetTitle className="sr-only">Admin navigation</SheetTitle>
           <nav className="flex h-full flex-col p-3">
             <div className="flex-1 space-y-0.5">
-              {ADMIN_NAV.map((item) => {
+              {navItems.map((item) => {
                 const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
                 return (
                   <Link

@@ -1,14 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { faqSchema, type FAQInput } from "@/lib/validations/faq";
-
-async function requireAdmin() {
-  const session = await auth();
-  if (!session?.user) throw new Error("Unauthorized");
-}
+import { requireAdmin } from "@/lib/auth-guards";
 
 function revalidateFaqPaths() {
   revalidatePath("/");

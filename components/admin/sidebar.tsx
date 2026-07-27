@@ -13,26 +13,32 @@ import {
   HelpCircle,
   Images,
   Settings,
+  Users,
+  UserCircle,
   LogOut,
   ExternalLink,
   Smartphone,
 } from "lucide-react";
 import { SITE_NAME } from "@/lib/constants";
+import type { AdminRole } from "@/lib/generated/prisma/client";
 
 export const ADMIN_NAV = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
-  { href: "/admin/products", label: "Products", icon: Package },
-  { href: "/admin/categories", label: "Categories", icon: FolderTree },
-  { href: "/admin/inquiries", label: "Inquiries", icon: MessageSquareText },
-  { href: "/admin/reviews", label: "Reviews", icon: Star },
-  { href: "/admin/blog", label: "Blog Posts", icon: Newspaper },
-  { href: "/admin/faqs", label: "FAQs", icon: HelpCircle },
-  { href: "/admin/gallery", label: "Gallery", icon: Images },
-  { href: "/admin/settings", label: "Site Settings", icon: Settings },
+  { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true, superAdminOnly: false },
+  { href: "/admin/products", label: "Products", icon: Package, superAdminOnly: false },
+  { href: "/admin/categories", label: "Categories", icon: FolderTree, superAdminOnly: true },
+  { href: "/admin/inquiries", label: "Inquiries", icon: MessageSquareText, superAdminOnly: false },
+  { href: "/admin/reviews", label: "Reviews", icon: Star, superAdminOnly: false },
+  { href: "/admin/blog", label: "Blog Posts", icon: Newspaper, superAdminOnly: false },
+  { href: "/admin/faqs", label: "FAQs", icon: HelpCircle, superAdminOnly: false },
+  { href: "/admin/gallery", label: "Gallery", icon: Images, superAdminOnly: false },
+  { href: "/admin/settings", label: "Site Settings", icon: Settings, superAdminOnly: true },
+  { href: "/admin/staff", label: "Staff", icon: Users, superAdminOnly: true },
+  { href: "/admin/account", label: "My Account", icon: UserCircle, superAdminOnly: false },
 ];
 
-export function AdminSidebar({ adminName }: { adminName?: string | null }) {
+export function AdminSidebar({ adminName, role }: { adminName?: string | null; role: AdminRole }) {
   const pathname = usePathname();
+  const navItems = ADMIN_NAV.filter((item) => !item.superAdminOnly || role === "SUPER_ADMIN");
 
   return (
     <aside className="flex h-full w-64 shrink-0 flex-col border-r border-border bg-card">
@@ -47,7 +53,7 @@ export function AdminSidebar({ adminName }: { adminName?: string | null }) {
       </div>
 
       <nav className="flex-1 space-y-0.5 overflow-y-auto p-3">
-        {ADMIN_NAV.map((item) => {
+        {navItems.map((item) => {
           const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
           return (
             <Link

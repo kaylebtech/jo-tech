@@ -1,13 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-
-async function requireAdmin() {
-  const session = await auth();
-  if (!session?.user) throw new Error("Unauthorized");
-}
+import { requireAdmin } from "@/lib/auth-guards";
 
 export async function updateInquiryStatus(id: string, status: "NEW" | "CONTACTED" | "CONVERTED" | "CLOSED") {
   await requireAdmin();

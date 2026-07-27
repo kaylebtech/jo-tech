@@ -1,13 +1,12 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { settingsSchema, type SettingsInput } from "@/lib/validations/settings";
+import { requireSuperAdmin } from "@/lib/auth-guards";
 
 export async function updateSettings(input: SettingsInput) {
-  const session = await auth();
-  if (!session?.user) throw new Error("Unauthorized");
+  await requireSuperAdmin();
 
   const data = settingsSchema.parse(input);
 

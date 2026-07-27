@@ -27,7 +27,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const valid = await bcrypt.compare(password, admin.passwordHash);
         if (!valid) return null;
 
-        return { id: admin.id, email: admin.email, name: admin.name ?? undefined };
+        return { id: admin.id, email: admin.email, name: admin.name ?? undefined, role: admin.role };
       },
     }),
   ],
