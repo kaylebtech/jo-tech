@@ -7,6 +7,47 @@ import { BUSINESS, placeholderImage } from "../lib/constants";
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
+/**
+ * Real photos (Unsplash License — free for commercial use, no attribution
+ * required) keyed by product slug, used instead of the navy placehold.co
+ * blocks where a reasonable match exists. Deliberately NOT manufacturer
+ * marketing photography (Apple/Samsung press images) — those are copyrighted
+ * and unsafe to use on a commercial site without a license. Coverage is
+ * uneven: exact-model shots exist for global flagships, but Unsplash has
+ * no photos of Nigeria-market devices (Tecno, Infinix) or of most exact
+ * current-year mid-range SKUs, so those fall back to a generic device photo
+ * of the same category — not a literal match, disclosed here for whoever
+ * reads this next.
+ */
+const UNSPLASH_PRODUCT_PHOTOS: Record<string, string> = {
+  "iphone-15-pro-max": "https://images.unsplash.com/photo-1695639509828-d4260075e370",
+  "samsung-galaxy-s24-ultra": "https://images.unsplash.com/photo-1705585174953-9b2aa8afc174",
+  "samsung-galaxy-a55": "https://images.unsplash.com/photo-1504999968522-8765b15c8aee", // generic Samsung Galaxy, not A55-specific
+  "infinix-zero-30-5g": "https://images.unsplash.com/photo-1690555405172-5a01affadab3", // generic phone camera close-up, not Infinix-specific
+  "tecno-camon-30-premier": "https://images.unsplash.com/photo-1760597371564-e44d6e361cbb", // generic phone camera module, not Tecno-specific
+  "macbook-air-m3-13": "https://images.unsplash.com/photo-1537731121640-bc1c4aba9b80",
+  "macbook-pro-14-m3-pro": "https://images.unsplash.com/photo-1529071242804-840f9a164b8b",
+  "dell-xps-13": "https://images.unsplash.com/photo-1593642633279-1796119d5482",
+  "hp-pavilion-15": "https://images.unsplash.com/photo-1683128069421-2c1881f70ed7", // HP logo close-up, not Pavilion-specific
+  "apple-watch-series-9": "https://images.unsplash.com/photo-1610991138842-6a635857608c", // Apple Watch (earlier series), not S9-specific
+  "samsung-galaxy-watch-6": "https://images.unsplash.com/photo-1553532129-70c57eb2bf81", // Galaxy Watch Active, not Watch 6-specific
+  "airpods-pro-2nd-gen": "https://images.unsplash.com/photo-1620620153794-8bb473687c76",
+  "airpods-max": "https://images.unsplash.com/photo-1628329567705-f8f7150c3cff",
+  "jbl-flip-6": "https://images.unsplash.com/photo-1589273705736-1bd0a0bcf116", // generic JBL portable speaker, not Flip 6-specific
+  "ipad-air-5th-gen": "https://images.unsplash.com/photo-1759820941220-fed6a1010146",
+  "samsung-galaxy-tab-s9": "https://images.unsplash.com/photo-1522204553393-1f71c9d4296d", // generic Samsung tablet, not Tab S9-specific
+  "playstation-5-slim": "https://images.unsplash.com/photo-1752262526779-bd65a9b83c25",
+  "xbox-series-x": "https://images.unsplash.com/photo-1621259182978-fbf93132d53d", // Xbox One pictured, not Series X-specific
+  "20w-usb-c-power-adapter": "https://images.unsplash.com/photo-1583863788434-e58a36330cf0",
+  "magsafe-charger": "https://images.unsplash.com/photo-1615526675159-e248c3021d3f",
+  "20000mah-power-bank": "https://images.unsplash.com/photo-1525858907241-d230b66fb9fa",
+};
+
+function productImageUrl(product: { name: string; slug: string }) {
+  const unsplashId = UNSPLASH_PRODUCT_PHOTOS[product.slug];
+  return unsplashId ? `${unsplashId}?w=900&h=900&fit=crop&q=80&auto=format` : placeholderImage(product.name, "900x900");
+}
+
 type SeedProduct = {
   name: string;
   slug: string;
@@ -501,7 +542,7 @@ async function main() {
       await prisma.productImage.createMany({
         data: [0, 1].map((idx) => ({
           productId: product.id,
-          url: placeholderImage(p.name, "900x900"),
+          url: productImageUrl(p),
           publicId: `seed/${p.slug}-${idx}`,
           altText: `${p.name} — ${p.brand} at Jo Tech Gadgets Hub Lagos`,
           position: idx,
