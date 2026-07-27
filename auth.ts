@@ -31,4 +31,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    ...authConfig.callbacks,
+    // Overrides the edge-safe jwt callback with a Prisma-backed one (Node-only,
+    // never loaded by proxy.ts). Re-checks the account on every request instead
+    // of only at sign-in, so a deleted or role-changed admin is signed out on
+    // their very next request rather than waiting for the JWT to expire.
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
+        return token;
+      }
+      if (!token.id) return token;
+
+      const admin = await prisma.adminUser.findUnique({ where: { id: token.id as string } });
+      if (!admin) return null;
+
+      token.role = admin.role;
+      return token;
+    },
+  },
 });
